@@ -15,6 +15,10 @@
     "sass": "^1.32.4"
   },
   "dependencies": {
-    "src": "^1.1.2"
+    "core-js": "^3.8.2",
+    "fractional": "^1.0.0",
+    "regenerator-runtime": "^0.13.7",
+    "src": "^1.1.2",
+    "views": "^1.0.2"
   }
 }
