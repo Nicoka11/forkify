@@ -3,6 +3,10 @@ import {getJSON} from './helpers.js'
 
 export const state = {
     recipe: {},
+    search: {
+      query: '',
+      results: [],
+    }
 }
 
 export const loadRecipe = async function (id) {
@@ -20,8 +24,28 @@ export const loadRecipe = async function (id) {
         cookingTime: recipe.cooking_time,
         ingredients: recipe.ingredients,
       };
-      console.log(state.recipe)
     } catch (err) {
         console.error(`${err}💛`);
+        throw err;
       }
+}
+
+export const loadSearchResults = async function (query) {
+  try {
+    const data = await getJSON(`${API_URL}?search=${query}&key=0f8ada3d-fe8e-49c7-a4c7-6ab6695b1541`)
+    
+
+    state.search.query = query
+    state.search.results = data.data.recipes.map(rec => {
+      return {
+        id: rec.id,
+        title: rec.title,
+        publisher: rec.publisher,
+        image: rec.image_url
+      };
+    })
+    if (!state.search.results.length) throw new Error('No recipe found')
+  } catch (err) {
+    throw err;
+  }
 }
