@@ -1,11 +1,11 @@
 import icons from '../../img/icons.svg';
 import { Fraction } from 'fractional';
-import View from './view.js'
+import View from './view.js';
 
 class recipeView extends View {
   _parentElement = document.querySelector('.recipe');
-  _errorMessage = `Sorry, We couldn't find this recipe ID, please try another one.`
-  _successMessage = `Recipe found succesfully !`
+  _errorMessage = `Sorry, We couldn't find this recipe ID, please try another one.`;
+  _successMessage = `Recipe found succesfully !`;
 
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));

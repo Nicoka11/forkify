@@ -3,7 +3,6 @@ import recipeView from './views/recipeView.js';
 import SearchView from './views/searchView.js';
 import ResultsView from './views/resultsView.js';
 
-
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
@@ -24,33 +23,29 @@ const controlRecipes = async function () {
     // Rendering Recipe
     recipeView.render(model.state.recipe);
   } catch (err) {
-    recipeView.renderError()
+    recipeView.renderError();
   }
 };
 
 const controlSearchResults = async function () {
   try {
-    const query = SearchView.getQuery()
+    const query = SearchView.getQuery();
     if (!query) return;
 
     //rendering Spinner
     ResultsView.renderSpinner();
-    console.log(query)
-
-    await model.loadSearchResults(query)
-
+    
+    await model.loadSearchResults(query);
+    
     //rendering results
-    ResultsView.render(model.state.search)
-
+    ResultsView.render(model.state.search);
   } catch (err) {
-    ResultsView.renderError()
+    ResultsView.renderError();
   }
-}
-
-controlSearchResults()
+};
 
 const init = function () {
-  recipeView.addHandlerRender(controlRecipes)
-  SearchView.addHandlerSearch(controlSearchResults)
-}
-init()
+  recipeView.addHandlerRender(controlRecipes);
+  SearchView.addHandlerSearch(controlSearchResults);
+};
+init();
