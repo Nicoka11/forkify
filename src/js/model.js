@@ -6,11 +6,14 @@ export const state = {
   search: {
     query: '',
     results: [],
+    page: 1,
+    resultsPerPage: 10
   },
 };
 
 export const loadRecipe = async function (id) {
   try {
+    if (id.length < 10) return;
     const data = await getJSON(`${API_URL}/${id}`);
 
     const { recipe } = data.data;
@@ -50,3 +53,12 @@ export const loadSearchResults = async function (query) {
     throw err;
   }
 };
+
+export const getSearchResultsPage = function (page = state.search.page) {
+  state.search.page = page
+
+  const start = (page-1) * state.search.resultsPerPage
+  const end = page * state.search.resultsPerPage
+
+  return state.search.results.slice(start,end)
+}
