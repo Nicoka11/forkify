@@ -1,5 +1,5 @@
 import icons from '../../img/icons.svg';
-// import { Fraction } from 'fractional';
+import { Fraction } from 'fractional';
 import View from './view.js';
 
 class recipeView extends View {
@@ -11,6 +11,16 @@ class recipeView extends View {
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
   }
 
+  addHandlerupdateServings(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.btn--tiny');
+      if (!btn) return;
+      const updateTo = +btn.dataset.updateTo;
+      if (updateTo <= 0) return;
+
+      handler(updateTo);
+    });
+  }
   _generateMarkup() {
     // Returns HTML markup
     return `
@@ -41,12 +51,16 @@ class recipeView extends View {
             <span class="recipe__info-text">servings</span>
 
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-update-to="${
+                this._data.servings - 1
+              }">
                 <svg>
                   <use href="${icons}#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update-servings" data-update-to="${
+                this._data.servings + 1
+              }">
                 <svg>
                   <use href="${icons}#icon-plus-circle"></use>
                 </svg>
@@ -123,9 +137,9 @@ class recipeView extends View {
     <li class="recipe__ingredient">
     <svg class="recipe__icon">
       <use href="${icons}#icon-check"></use>
-    </svg>²
+    </svg>
     <div class="recipe__quantity">${
-      ing.quantity ? `${new Fraction(ing.quantity).toString()} of` : ''
+      ing.quantity ? `${new Fraction(ing.quantity)} of` : ''
     }</div>
     <div class="recipe__description">
       <span class="recipe__unit">${ing.unit}</span>

@@ -27,7 +27,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  renderError (message = this._errorMessage) {
+  renderError(message = this._errorMessage, error) {
     const markup = `
     <div class="error">
             <div>
@@ -37,12 +37,12 @@ export default class View {
             </div>
             <p>${message}</p>
           </div>
-    `
+    `;
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  renderSuccess (message = this._successMessage) {
+  renderSuccess(message = this._successMessage) {
     const markup = `
     <div class="message">
             <div>
@@ -52,7 +52,7 @@ export default class View {
             </div>
             <p>${message}</p>
           </div>
-    `
+    `;
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }

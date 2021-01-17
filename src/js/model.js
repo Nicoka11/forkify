@@ -27,7 +27,7 @@ export const loadRecipe = async function (id) {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
-    console.log(state.recipe)
+    console.log(state.recipe);
   } catch (err) {
     console.error(`${err}💛`);
     throw err;
@@ -36,9 +36,7 @@ export const loadRecipe = async function (id) {
 
 export const loadSearchResults = async function (query) {
   try {
-    const data = await getJSON(
-      `${API_URL}?search=${query}`
-    );
+    const data = await getJSON(`${API_URL}?search=${query}`);
 
     state.search.query = query;
     state.search.results = data.data.recipes.map(rec => {
@@ -67,7 +65,7 @@ export const getSearchResultsPage = function (page = state.search.page) {
 export const updateServings = function (servingsNum) {
   console.log(state.recipe);
   state.recipe.ingredients.forEach(
-    ing => ing.qunatity = (ing.quantity / state.recipe.servings) * servingsNum
+    ing => (ing.quantity = (ing.quantity * servingsNum) / state.recipe.servings)
   );
   state.recipe.servings = servingsNum;
   console.log(state.recipe);
