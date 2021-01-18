@@ -19,6 +19,9 @@ const controlRecipes = async function () {
 
     recipeView.renderSpinner();
 
+    //Updating Results View
+    ResultsView.update(model.getSearchResultsPage());
+
     // Loading Recipe
     await model.loadRecipe(id);
 
@@ -54,12 +57,6 @@ const controlSearchResults = async function () {
   }
 };
 
-const controlActiveRecipe = function () {
-  const recipeId = ResultsView.activeRecipeId;
-  console.log(ResultsView.activeRecipeId);
-  ResultsView.activeResult(recipeId);
-};
-
 const controlPagination = function (goToPage) {
   console.log('Page Control is working', goToPage);
 
@@ -75,7 +72,8 @@ const controlServings = function (servingsNum) {
   model.updateServings(servingsNum);
 
   // Update he recipe view
-  recipeView.render(model.state.recipe);
+  // recipeView.render(model.state.recipe);
+  recipeView.update(model.state.recipe);
 };
 
 const init = function () {

@@ -5,14 +5,15 @@ class ResultsView extends View {
   _parentElement = document.querySelector('.results');
   _errorMessage = `No recipe available for your search, please try something else`;
   _successMessage = `Recipe found succesfully !`;
-  activeRecipeId = '';
 
 
   _generateMarkup() {
+    const curId = window.location.hash.slice(1)
+
     return `${this._data
       .map(
-        res => `<li class="preview" id="${res.id}">
-    <a class="preview__link" href="#23456">
+        res => `<li class="preview">
+    <a class="preview__link ${curId === res.id ? 'preview__link--active' : ''}" href="#${res.id}">
       <figure class="preview__fig">
         <img src="${res.image}" alt="Test" />
       </figure>
@@ -25,14 +26,6 @@ class ResultsView extends View {
       )
       .join('')}
         `;
-  }
-
-  activeResult(id) {
-    const previews = document.querySelectorAll('.preview');
-    previews.forEach(preview =>
-      preview.classList.remove('preview__link--active')
-    );
-    document.getElementById(id).classList.add('preview__link--active');
   }
 
   addHandlerResult(handler) {
