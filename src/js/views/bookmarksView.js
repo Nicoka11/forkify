@@ -2,12 +2,16 @@
 import View from './view.js';
 import PreviewView from './Previewview.js';
 
-class ResultsView extends View {
-  _parentElement = document.querySelector('.results');
-  _errorMessage = `No recipe available for your search, please try something else`;
+class BookmarksView extends View {
+  _parentElement = document.querySelector('.bookmarks__list');
+  _errorMessage = `No bookmarks yet, find a nice recipe and bookmark it !`;
   _successMessage = `Recipe found succesfully !`;
 
 
+  addHandlerRender(handler) {
+      window.addEventListener('load', handler)
+  }  
+    
   _generateMarkup() {
     return this._data.map(result => PreviewView.render(result, false)).join('');
   }
@@ -22,4 +26,4 @@ class ResultsView extends View {
   }
 }
 
-export default new ResultsView();
+export default new BookmarksView();

@@ -3,9 +3,12 @@ import icons from '../../img/icons.svg';
 export default class View {
   _data;
 
-  render(data) {
+  render(data, render = true) {
     this._data = data;
     const markup = this._generateMarkup();
+
+    if(!render) return markup;
+
     this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
@@ -21,9 +24,9 @@ export default class View {
     const newElements = Array.from(newDom.querySelectorAll('*'));
     const curElements = Array.from(this._parentElement.querySelectorAll('*'));
 
-    newElements.forEach((newEl, i) => {
+      newElements.forEach((newEl, i) => {
       const curEl = curElements[i];
-
+      console.log(curEl)
       if (
         !newEl.isEqualNode(curEl) &&
         newEl.firstChild?.nodeValue.trim() !== ''
