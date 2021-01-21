@@ -1,5 +1,7 @@
 import { API_URL } from './config.js';
+import { KEY } from './config.js';
 import { getJSON } from './helpers.js';
+import { sendJSON } from './helpers.js';
 
 export const state = {
   recipe: {},
@@ -75,30 +77,66 @@ export const updateServings = function (servingsNum) {
 };
 
 const persistBookmarks = function () {
-  localStorage.setItem(
-    'bookmarks', JSON.stringify(state.bookmarks)
-    )
-}
+  localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
+};
 
 export const addBookmark = function (recipe) {
   state.bookmarks.push(recipe);
 
   // Mark current recipe as bookmark
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
-  persistBookmarks()
+  persistBookmarks();
 };
 
 export const removeBookmark = function (id) {
-  const index = state.bookmarks.findIndex(el => el.id === id)
-  state.bookmarks.splice(index, 1)
+  const index = state.bookmarks.findIndex(el => el.id === id);
+  state.bookmarks.splice(index, 1);
 
   if (id === state.recipe.id) state.recipe.bookmarked = false;
-  persistBookmarks()
-}
+  persistBookmarks();
+};
+
+export const uploadRecipe = async function (recipeData) {
+  try {
+    const ingredients = Object.entries(recipeData)
+      .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
+      .map(ing => {
+        const ingArr = ing[1].replaceAll('', '').split(',');
+
+        if (ingArr.length != 3) throw new Error('Wrong ingredient format :(');
+
+        const [quantity, unit, description] = ingArr;
+        return { quantity: quantity ? +quantity : null, unit, description };
+      });
+
+    console.log(ingredients);
+
+    const recipe = {
+      title: recipeData.title,
+      source_url: recipeData.sourceUrl,
+      publisher: recipeData.publisher,
+      image_url: recipeData.image,
+      cooking_time: +recipeData.cookingTime,
+      servings: +recipeData.servings,
+      ingredients,
+    };
+  
+    console.log(recipe)
+
+    const data = await sendJSON(`${API_URL}?key=${KEY}`,recipe)
+    console.log(data)
+  } catch (err) {
+    throw err;
+  }
+
+  
+};
 
 const init = function () {
-  const localBookmarks = localStorage.getItem('bookmarks')
-  if(localBookmarks){state.bookmarks = JSON.parse(localBookmarks)}
-}
+  const localBookmarks = localStorage.getItem('bookmarks');
+  if (localBookmarks) {
+    state.bookmarks = JSON.parse(localBookmarks);
+  }
+};
 
-init()
+init();
